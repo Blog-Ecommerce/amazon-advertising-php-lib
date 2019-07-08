@@ -6,14 +6,14 @@ use CapsuleB\AmazonAdvertising\Client;
 use Exception;
 
 /**
- * Class ProductAds
+ * Class AdGroupsBiddableKeywords
  * @package CapsuleB\AmazonAdvertising\Resources
  *
  * @property Client $client
  */
-class ProductAds {
+class AdGroupsBiddableKeywords {
 
-  const BASE_URL = 'productAds';
+  const BASE_URL = 'keywords';
 
   /**
    * Addons constructor.
@@ -42,21 +42,21 @@ class ProductAds {
   }
 
   /**
-   * @param string $adId
+   * @param string $keywordId
    * @return array
    * @throws Exception
    */
-  public function get($adId) {
-    return $this->client->get(self::BASE_URL, $adId);
+  public function get($keywordId) {
+    return $this->client->get([self::BASE_URL, $keywordId]);
   }
 
   /**
-   * @param string $adId
+   * @param string $keywordId
    * @return array
    * @throws Exception
    */
-  public function getExtended($adId) {
-    return $this->client->get([self::BASE_URL, 'extended', $adId]);
+  public function getExtended($keywordId) {
+    return $this->client->get([self::BASE_URL, 'extended', $keywordId]);
   }
 
   /**
@@ -78,12 +78,12 @@ class ProductAds {
   }
 
   /**
-   * @param string $adId
+   * @param string $keywordId
    * @return array
    * @throws Exception
    */
-  public function archive($adId) {
-    return $this->client->delete(self::BASE_URL, $adId);
+  public function archive($keywordId) {
+    return $this->client->delete([self::BASE_URL, $keywordId]);
   }
 
 }

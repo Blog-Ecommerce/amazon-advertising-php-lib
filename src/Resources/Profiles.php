@@ -24,7 +24,7 @@ class Profiles {
   }
 
   /**
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function list() {
@@ -33,7 +33,7 @@ class Profiles {
 
   /**
    * @param $profileId
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function get($profileId) {
@@ -42,7 +42,7 @@ class Profiles {
 
   /**
    * @param array $params
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function update($params = []) {
@@ -51,7 +51,7 @@ class Profiles {
 
   /**
    * @param $countryCode
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function register($countryCode) {
@@ -63,7 +63,7 @@ class Profiles {
   /**
    * @param $countryCode
    * @param $brand
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function registerBrand($countryCode, $brand) {

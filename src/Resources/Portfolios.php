@@ -25,7 +25,7 @@ class Portfolios {
 
   /**
    * @param array $query
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function list($query = []) {
@@ -34,7 +34,7 @@ class Portfolios {
 
   /**
    * @param array $query
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function listExtended($query = []) {
@@ -43,7 +43,7 @@ class Portfolios {
 
   /**
    * @param $portfolioId
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function get($portfolioId) {
@@ -52,7 +52,7 @@ class Portfolios {
 
   /**
    * @param $portfolioId
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function getExtended($portfolioId) {
@@ -61,7 +61,7 @@ class Portfolios {
 
   /**
    * @param array $params
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function create($params = []) {
@@ -70,7 +70,7 @@ class Portfolios {
 
   /**
    * @param array $params
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function update($params = []) {

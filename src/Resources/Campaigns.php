@@ -25,7 +25,7 @@ class Campaigns{
 
   /**
    * @param array $query
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function list($query = []) {
@@ -34,7 +34,7 @@ class Campaigns{
 
   /**
    * @param array $query
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function listExtended($query = []) {
@@ -43,7 +43,7 @@ class Campaigns{
 
   /**
    * @param string $campaignId
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function get($campaignId) {
@@ -52,7 +52,7 @@ class Campaigns{
 
   /**
    * @param string $campaignId
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function getExtended($campaignId) {
@@ -61,27 +61,36 @@ class Campaigns{
 
   /**
    * @param array $params
+   * @return array
    * @throws Exception
    */
   public function create($params = []) {
-    $this->client->post(self::BASE_URL, null, $params);
+    return $this->client->post(self::BASE_URL, null, $params);
   }
 
   /**
    * @param array $params
+   * @return array
    * @throws Exception
    */
   public function update($params = []) {
-    $this->client->put(self::BASE_URL, null, $params);
+    return $this->client->put(self::BASE_URL, null, $params);
   }
 
   /**
    * @param string $campaignId
-   * @return mixed
+   * @return array
    * @throws Exception
    */
   public function archive($campaignId) {
     return $this->client->delete(self::BASE_URL, $campaignId);
+  }
+
+  /**
+   * @return CampaignsNegativeKeywords
+   */
+  public function negativeKeywords() {
+    return new CampaignsNegativeKeywords($this->client);
   }
 
 }

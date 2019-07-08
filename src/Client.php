@@ -3,7 +3,10 @@
 namespace CapsuleB\AmazonAdvertising;
 
 use CapsuleB\AmazonAdvertising\Resources\AdGroups;
+use CapsuleB\AmazonAdvertising\Resources\AdGroupsBiddableKeywords;
+use CapsuleB\AmazonAdvertising\Resources\AdGroupsNegativeKeywords;
 use CapsuleB\AmazonAdvertising\Resources\Campaigns;
+use CapsuleB\AmazonAdvertising\Resources\CampaignsNegativeKeywords;
 use CapsuleB\AmazonAdvertising\Resources\Portfolios;
 use CapsuleB\AmazonAdvertising\Resources\ProductAds;
 use CapsuleB\AmazonAdvertising\Resources\ProductTargeting;
@@ -17,15 +20,18 @@ use Exception;
  * Class Client
  * @package CapsuleB\AmazonAdvertising
  *
- * @property AdGroups           $adGroups
- * @property Campaigns          $campaigns
- * @property Portfolios         $portfolios
- * @property ProductAds         $productAds
- * @property ProductTargeting   $productTargeting
- * @property Profiles           $profiles
- * @property Reports            $reports
- * @property Snapshots          $snapshots
- * @property Stores             $stores
+ * @property AdGroups                   $adGroups
+ * @property AdGroupsBiddableKeywords   $adGroupsBiddableKeywords
+ * @property AdGroupsNegativeKeywords   $adGroupsNegativeKeywords
+ * @property Campaigns                  $campaigns
+ * @property CampaignsNegativeKeywords  $campaignsNegativeKeywords
+ * @property Portfolios                 $portfolios
+ * @property ProductAds                 $productAds
+ * @property ProductTargeting           $productTargeting
+ * @property Profiles                   $profiles
+ * @property Reports                    $reports
+ * @property Snapshots                  $snapshots
+ * @property Stores                     $stores
  */
 class Client {
 
@@ -131,15 +137,18 @@ class Client {
     $this->initQuery();
 
     // Init the resources
-    $this->adGroups         = new AdGroups($this);
-    $this->campaigns        = new Campaigns($this);
-    $this->portfolios       = new Portfolios($this);
-    $this->productAds       = new ProductAds($this);
-    $this->productTargeting = new ProductTargeting($this);
-    $this->profiles         = new Profiles($this);
-    $this->reports          = new Reports($this);
-    $this->snapshots        = new Snapshots($this);
-    $this->stores           = new Stores($this);
+    $this->adGroups                   = new AdGroups($this);
+    $this->adGroupsBiddableKeywords   = new AdGroupsBiddableKeywords($this);
+    $this->adGroupsNegativeKeywords   = new AdGroupsNegativeKeywords($this);
+    $this->campaigns                  = new Campaigns($this);
+    $this->campaignsNegativeKeywords  = new CampaignsNegativeKeywords($this);
+    $this->portfolios                 = new Portfolios($this);
+    $this->productAds                 = new ProductAds($this);
+    $this->productTargeting           = new ProductTargeting($this);
+    $this->profiles                   = new Profiles($this);
+    $this->reports                    = new Reports($this);
+    $this->snapshots                  = new Snapshots($this);
+    $this->stores                     = new Stores($this);
   }
 
   /**
