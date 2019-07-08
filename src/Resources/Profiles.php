@@ -27,7 +27,7 @@ class Profiles {
    * @return mixed
    * @throws Exception
    */
-  public function all() {
+  public function list() {
     return $this->client->get([self::BASE_URL]);
   }
 

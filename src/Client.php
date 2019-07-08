@@ -2,14 +2,30 @@
 
 namespace CapsuleB\AmazonAdvertising;
 
+use CapsuleB\AmazonAdvertising\Resources\AdGroups;
+use CapsuleB\AmazonAdvertising\Resources\Campaigns;
+use CapsuleB\AmazonAdvertising\Resources\Portfolios;
+use CapsuleB\AmazonAdvertising\Resources\ProductAds;
+use CapsuleB\AmazonAdvertising\Resources\ProductTargeting;
 use CapsuleB\AmazonAdvertising\Resources\Profiles;
+use CapsuleB\AmazonAdvertising\Resources\Reports;
+use CapsuleB\AmazonAdvertising\Resources\Snapshots;
+use CapsuleB\AmazonAdvertising\Resources\Stores;
 use Exception;
 
 /**
  * Class Client
  * @package CapsuleB\AmazonAdvertising
  *
- * @property Profiles $profiles
+ * @property AdGroups           $adGroups
+ * @property Campaigns          $campaigns
+ * @property Portfolios         $portfolios
+ * @property ProductAds         $productAds
+ * @property ProductTargeting   $productTargeting
+ * @property Profiles           $profiles
+ * @property Reports            $reports
+ * @property Snapshots          $snapshots
+ * @property Stores             $stores
  */
 class Client {
 
@@ -109,13 +125,21 @@ class Client {
     $this->region       = $region;
     $this->sandbox      = $sandbox;
 
-    // Init the resources
-    $this->profiles = new Profiles($this);
-
     // Init the header and query
     $this->initBaseUrl();
     $this->initHeader();
     $this->initQuery();
+
+    // Init the resources
+    $this->adGroups         = new AdGroups($this);
+    $this->campaigns        = new Campaigns($this);
+    $this->portfolios       = new Portfolios($this);
+    $this->productAds       = new ProductAds($this);
+    $this->productTargeting = new ProductTargeting($this);
+    $this->profiles         = new Profiles($this);
+    $this->reports          = new Reports($this);
+    $this->snapshots        = new Snapshots($this);
+    $this->stores           = new Stores($this);
   }
 
   /**
