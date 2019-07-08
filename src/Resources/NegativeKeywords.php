@@ -6,15 +6,14 @@ use CapsuleB\AmazonAdvertising\Client;
 use Exception;
 
 /**
- * Class CampaignsNegativeKeywords
+ * Class NegativeKeywords
  * @package CapsuleB\AmazonAdvertising\Resources
- * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/campaign_negative_keywords
  *
  * @property Client $client
  */
-class CampaignsNegativeKeywords {
+class NegativeKeywords {
 
-  const BASE_URL_SP = 'sp/campaignNegativeKeywords';
+  const BASE_URL_SP = 'sp/negativeKeywords';
 
   /**
    * Addons constructor.
@@ -25,7 +24,7 @@ class CampaignsNegativeKeywords {
   }
 
   /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/campaign_negative_keywords#listCampaignNegativeKeywords
+   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/ad_group_negative_keywords#listNegativeKeywords
    * @param array $query
    * @return array
    * @throws Exception
@@ -35,7 +34,7 @@ class CampaignsNegativeKeywords {
   }
 
   /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/campaign_negative_keywords#listCampaignNegativeKeywordsEx
+   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/ad_group_negative_keywords#listNegativeKeywordsEx
    * @param array $query
    * @return array
    * @throws Exception
@@ -45,7 +44,7 @@ class CampaignsNegativeKeywords {
   }
 
   /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/campaign_negative_keywords#getCampaignNegativeKeyword
+   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/ad_group_negative_keywords#getNegativeKeyword
    * @param string $keywordId
    * @return array
    * @throws Exception
@@ -55,7 +54,7 @@ class CampaignsNegativeKeywords {
   }
 
   /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/campaign_negative_keywords#getCampaignNegativeKeywordEx
+   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/ad_group_negative_keywords#getNegativeKeywordEx
    * @param string $keywordId
    * @return array
    * @throws Exception
@@ -65,7 +64,7 @@ class CampaignsNegativeKeywords {
   }
 
   /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/campaign_negative_keywords#createCampaignNegativeKeywords
+   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/ad_group_negative_keywords#createNegativeKeywords
    * @param array $params
    * @return array
    * @throws Exception
@@ -75,7 +74,7 @@ class CampaignsNegativeKeywords {
   }
 
   /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/campaign_negative_keywords#updateCampaignNegativeKeywords
+   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/ad_group_negative_keywords#updateNegativeKeywords
    * @param array $params
    * @return array
    * @throws Exception
@@ -85,7 +84,7 @@ class CampaignsNegativeKeywords {
   }
 
   /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/campaign_negative_keywords#archiveCampaignNegativeKeyword
+   * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/ad_group_negative_keywords#archiveNegativeKeyword
    * @param string $keywordId
    * @return array
    * @throws Exception

@@ -8,6 +8,7 @@ use Exception;
 /**
  * Class Profiles
  * @package CapsuleB\AmazonAdvertising\Resources
+ * @see https://advertising.amazon.com/API/docs/v2/reference/profiles
  *
  * @property Client $client
  */
@@ -24,6 +25,7 @@ class Profiles {
   }
 
   /**
+   * @see https://advertising.amazon.com/API/docs/v2/reference/profiles#listProfiles
    * @return array
    * @throws Exception
    */
@@ -32,6 +34,7 @@ class Profiles {
   }
 
   /**
+   * @see https://advertising.amazon.com/API/docs/v2/reference/profiles#getProfile
    * @param $profileId
    * @return array
    * @throws Exception
@@ -41,6 +44,7 @@ class Profiles {
   }
 
   /**
+   * @see https://advertising.amazon.com/API/docs/v2/reference/profiles#updateProfiles
    * @param array $params
    * @return array
    * @throws Exception
@@ -50,6 +54,7 @@ class Profiles {
   }
 
   /**
+   * @see https://advertising.amazon.com/API/docs/v2/reference/profiles#registerProfile
    * @param $countryCode
    * @return array
    * @throws Exception
@@ -61,6 +66,7 @@ class Profiles {
   }
 
   /**
+   * @see https://advertising.amazon.com/API/docs/v2/reference/profiles#registerBrand
    * @param $countryCode
    * @param $brand
    * @return array

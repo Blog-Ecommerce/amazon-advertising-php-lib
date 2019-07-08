@@ -3,8 +3,8 @@
 namespace CapsuleB\AmazonAdvertising;
 
 use CapsuleB\AmazonAdvertising\Resources\AdGroups;
-use CapsuleB\AmazonAdvertising\Resources\AdGroupsBiddableKeywords;
-use CapsuleB\AmazonAdvertising\Resources\AdGroupsNegativeKeywords;
+use CapsuleB\AmazonAdvertising\Resources\Keywords;
+use CapsuleB\AmazonAdvertising\Resources\NegativeKeywords;
 use CapsuleB\AmazonAdvertising\Resources\Campaigns;
 use CapsuleB\AmazonAdvertising\Resources\CampaignsNegativeKeywords;
 use CapsuleB\AmazonAdvertising\Resources\Portfolios;
@@ -21,8 +21,8 @@ use Exception;
  * @package CapsuleB\AmazonAdvertising
  *
  * @property AdGroups                   $adGroups
- * @property AdGroupsBiddableKeywords   $adGroupsBiddableKeywords
- * @property AdGroupsNegativeKeywords   $adGroupsNegativeKeywords
+ * @property Keywords                   $keywords
+ * @property NegativeKeywords           $negativeKeywords
  * @property Campaigns                  $campaigns
  * @property CampaignsNegativeKeywords  $campaignsNegativeKeywords
  * @property Portfolios                 $portfolios
@@ -138,8 +138,8 @@ class Client {
 
     // Init the resources
     $this->adGroups                   = new AdGroups($this);
-    $this->adGroupsBiddableKeywords   = new AdGroupsBiddableKeywords($this);
-    $this->adGroupsNegativeKeywords   = new AdGroupsNegativeKeywords($this);
+    $this->keywords                   = new Keywords($this);
+    $this->negativeKeywords           = new NegativeKeywords($this);
     $this->campaigns                  = new Campaigns($this);
     $this->campaignsNegativeKeywords  = new CampaignsNegativeKeywords($this);
     $this->portfolios                 = new Portfolios($this);

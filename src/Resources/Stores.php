@@ -23,4 +23,22 @@ class Stores {
     $this->client = $client;
   }
 
+  /**
+   * @see https://advertising.amazon.com/API/docs/v2/reference/stores#listStores
+   * @return array
+   * @throws Exception
+   */
+  public function list() {
+    return $this->client->get(self::BASE_URL);
+  }
+
+  /**
+   * @see https://advertising.amazon.com/API/docs/v2/reference/stores#getStore
+   * @param $brandEntityId
+   * @return array
+   * @throws Exception
+   */
+  public function get($brandEntityId) {
+    return $this->client->get([self::BASE_URL, $brandEntityId]);
+  }
 }
