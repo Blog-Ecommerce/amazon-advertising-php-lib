@@ -25,11 +25,13 @@
     "source": "https://github.com/Blog-Ecommerce/amazon-advertising-php-lib"
   },
   "autoload": {
-    "psr-0": {
+    "psr-4": {
       "CapsuleB\\AmazonAdvertising\\": "src/"
     }
   },
   "autoload-dev": {
-    "classmap": ["tests"]
+    "psr-4": {
+      "CapsuleB\\AmazonAdvertising\\Test\\": "test/"
+    }
   }
 }

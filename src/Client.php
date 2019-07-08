@@ -1,43 +1,169 @@
 <?php
 
-namespace CapsuleB;
+namespace CapsuleB\AmazonAdvertising;
 
+use CapsuleB\AmazonAdvertising\Resources\Profiles;
 use Exception;
 
 /**
  * Class Client
- * @package CapsuleB
+ * @package CapsuleB\AmazonAdvertising
  *
- * @property $apiKey
- * @property $baseUrl
- * @property $curlClient
- * @property $requestHeader
- * @property $requestQuery
+ * @property Profiles $profiles
  */
 class Client {
 
-  const BASE_URL = 'https://subscriptions.zoho.eu/api/v1';
+  /**
+   * Sandbox Environment. Covers all marketplaces
+   */
+  const BASE_URL_SANDBOX = 'https://advertising-api-test.amazon.com/v2';
+
+  /**
+   * North America (NA). Covers US and CA marketplaces
+   */
+  const BASE_URL_NA = 'https://advertising-api.amazon.com/v2';
+
+  /**
+   * Europe (EU). Covers UK, FR, IT, ES, and DE marketplaces
+   */
+  const BASE_URL_EU = 'https://advertising-api-eu.amazon.com/v2';
+
+  /**
+   * Far East (FE). Covers JP and AU marketplaces.
+   */
+  const BASE_URL_FE = 'https://advertising-api-fe.amazon.com/v2';
+
+  /**
+   * URL used to refresh the token
+   */
+  const BASE_REFRESH_TOKEN = 'https://api.amazon.com/auth/o2/token';
+
+  /**
+   * @var string $baseUrl
+   */
+  private $baseUrl;
+
+  /**
+   * @var $requestHeader
+   */
+  private $requestHeader;
+
+  /**
+   * @var $requestQuery
+   */
+  private $requestQuery;
+
+  /**
+   * @var $curlClient
+   */
+  private $curlClient;
+
+  /**
+   * @var string $clientId
+   */
+  private $clientId;
+
+  /**
+   * @var string $clientSecret
+   */
+  private $clientSecret;
+
+  /**
+   * @var string $accessToken
+   */
+  private $accessToken;
+
+  /**
+   * @var string $refreshToken
+   */
+  private $refreshToken;
+
+  /**
+   * @var string $region
+   */
+  private $region;
+
+  /**
+   * @var bool $sandbox
+   */
+  private $sandbox;
 
   /**
    * Client constructor.
-   * @param $apiKey
+   * @param $clientId
+   * @param $clientSecret
+   * @param $accessToken
+   * @param $refreshToken
+   * @param null $region
+   * @param bool $sandbox
    */
-  public function __construct($apiKey) {
+  public function __construct($clientId, $clientSecret, $accessToken, $refreshToken = null, $region = null, $sandbox = true) {
+    // Init the Curl Client
     $this->curlClient = curl_init();
-    $this->apiKey     = $apiKey;
-    $this->baseUrl    = self::BASE_URL;
 
-    // Init the request header
+    // Init the infos
+    $this->clientId     = $clientId;
+    $this->clientSecret = $clientSecret;
+    $this->accessToken  = $accessToken;
+    $this->refreshToken = $refreshToken;
+    $this->region       = $region;
+    $this->sandbox      = $sandbox;
+
+    // Init the resources
+    $this->profiles = new Profiles($this);
+
+    // Init the header and query
+    $this->initBaseUrl();
+    $this->initHeader();
+    $this->initQuery();
+  }
+
+  /**
+   * Inits the Base Url by checking which one to use base on region
+   */
+  private function initBaseUrl() {
+    if ($this->sandbox == true || empty($this->region)) {
+      $this->baseUrl = self::BASE_URL_SANDBOX;
+    } else {
+      switch (strtoupper($this->region)) {
+        case 'US':
+        case 'CA':
+          $this->baseUrl = self::BASE_URL_NA;
+          break;
+        case 'UK':
+        case 'FR':
+        case 'IT':
+        case 'ES':
+        case 'DE':
+          $this->baseUrl = self::BASE_URL_EU;
+          break;
+        case 'JP':
+        case 'AU':
+          $this->baseUrl = self::BASE_URL_FE;
+          break;
+        default:
+          $this->baseUrl = self::BASE_URL_SANDBOX;
+          break;
+      }
+    }
+  }
+
+  /**
+   * Init the request header
+   */
+  private function initHeader() {
     $this->requestHeader = [
-      'Content-Type: application/x-www-form-urlencoded;charset=UTF-8',
-      'Authorization: Zoho-authtoken ' . $this->apiKey
+      'Content-Type: application/json',
+      'Authorization: Bearer ' . $this->accessToken,
+      'Amazon-Advertising-API-ClientId: ' . $this->clientId
     ];
+  }
 
-    // Init the request base query
+  /**
+   * Init the request base query
+   */
+  private function initQuery() {
     $this->requestQuery = [];
-
-    // Init the Resources
-    $this->campaigns = new Campaigns($this);
   }
 
   /**
@@ -55,12 +181,44 @@ class Client {
   }
 
   /**
-   * @param $organizationId
+   * Append the customer Id (aka Scope) to the header
+   * @param $customerId
    */
-  public function setOrganizationId($organizationId) {
-    $this->appendHeader([
-      'X-com-zoho-subscriptions-organizationid:' . $organizationId,
+  public function setCustomerId($customerId) {
+    $this->appendHeader(['Amazon-Advertising-API-Scope:' . $customerId,]);
+  }
+
+  /**
+   * Refresh the token and store the new access token (return the info so it can be stored in DB)
+   * @return mixed
+   * @throws Exception
+   */
+  public function refreshToken() {
+    // Reset temporarily the header
+    $this->requestHeader = [
+      'Content-Type: application/json',
+    ];
+
+    // Make the request to refresh the access token
+    $this->baseUrl = self::BASE_REFRESH_TOKEN;
+    $responseToken = $this->post([self::BASE_REFRESH_TOKEN], null, [
+      'grant_type'    => 'refresh_token',
+      'client_id'     => $this->clientId,
+      'refresh_token' => $this->refreshToken,
+      'client_secret' => $this->clientSecret
     ]);
+
+    // Store the new token
+    $this->accessToken  = $responseToken->access_token;
+    $this->refreshToken = $responseToken->refresh_token;
+
+    // (re)Init the url, header, query
+    $this->initBaseUrl();
+    $this->initHeader();
+    $this->initQuery();
+
+    // Return the newly created token
+    return $responseToken;
   }
 
   /**
@@ -88,8 +246,11 @@ class Client {
       $path .= '?' . http_build_query($query);
     }
 
+    // Set the url to use for the request (creates exception for refresh token)
+    $requestUrl = $this->baseUrl == self::BASE_REFRESH_TOKEN ? $this->baseUrl : $this->baseUrl . '/' . $path;
+
     // Set the request params
-    curl_setopt($this->curlClient, CURLOPT_URL, $this->baseUrl . '/' . $path);
+    curl_setopt($this->curlClient, CURLOPT_URL, $requestUrl);
     curl_setopt($this->curlClient, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($this->curlClient, CURLOPT_HEADER, FALSE);
     curl_setopt($this->curlClient, CURLOPT_CUSTOMREQUEST, $method);
@@ -109,7 +270,8 @@ class Client {
     if ($httpcode == 200 || $httpcode == 201) {
       return $response;
     } else {
-      throw new Exception($response->message);
+      return 'FAILURE';
+      //throw new Exception($response->message);
     }
   }
 
@@ -172,6 +334,6 @@ class Client {
    * @return array
    */
   private static function wrap($value) {
-    return ! is_array($value) ? [$value] : $value;
+    return !is_array($value) ? [$value] : $value;
   }
 }
