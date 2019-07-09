@@ -159,10 +159,12 @@ class Client {
       $this->baseUrl = self::BASE_URL_SANDBOX;
     } else {
       switch (strtoupper($this->region)) {
+        case 'NA':
         case 'US':
         case 'CA':
           $this->baseUrl = self::BASE_URL_NA;
           break;
+        case 'EU':
         case 'UK':
         case 'FR':
         case 'IT':
@@ -170,6 +172,7 @@ class Client {
         case 'DE':
           $this->baseUrl = self::BASE_URL_EU;
           break;
+        case 'FE':
         case 'JP':
         case 'AU':
           $this->baseUrl = self::BASE_URL_FE;
