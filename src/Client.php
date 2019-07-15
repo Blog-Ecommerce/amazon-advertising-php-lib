@@ -225,6 +225,15 @@ class Client {
   }
 
   /**
+   * Check if the request was made in a sandbox mode
+   *
+   * @return bool
+   */
+  public function isSandbox() {
+    return $this->sandbox;
+  }
+
+  /**
    * Refresh the token and store the new access token (return the info so it can be stored in DB)
    * @return mixed
    * @throws Exception
