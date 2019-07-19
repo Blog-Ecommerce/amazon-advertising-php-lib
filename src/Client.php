@@ -221,7 +221,7 @@ class Client {
    * @param $customerId
    */
   public function setCustomerId($customerId) {
-    $this->appendHeader(['Amazon-Advertising-API-Scope:' . $customerId,]);
+    $this->appendHeader(['Amazon-Advertising-API-Scope:' . $customerId]);
   }
 
   /**
@@ -303,6 +303,7 @@ class Client {
 
     // Add params if any
     if (!empty($params)) {
+      curl_setopt($this->curlClient, CURLOPT_POST, TRUE);
       curl_setopt($this->curlClient, CURLOPT_POSTFIELDS, json_encode($params));
     }
 
@@ -312,11 +313,10 @@ class Client {
     curl_close($this->curlClient);
 
     // Return the response
-    if ($httpcode == 200 || $httpcode == 201) {
+    if (in_array($httpcode, [200, 201, 202, 203, 204, 205, 206, 207, 208, 210, 226])) {
       return $response;
     } else {
-      return 'FAILURE';
-      //throw new Exception($response->message);
+      throw new Exception($response);
     }
   }
 
