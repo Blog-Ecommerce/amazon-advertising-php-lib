@@ -308,14 +308,23 @@ class Client {
     }
 
     // Does the request
-    $response = json_decode(curl_exec($this->curlClient));
-    $httpcode = curl_getinfo($this->curlClient, CURLINFO_HTTP_CODE);
+    $response     = json_decode(curl_exec($this->curlClient));
+    $responseInfo = curl_getinfo($this->curlClient);
     curl_close($this->curlClient);
 
+    // If it's a 307 HTTP Status, redirect to download
+    if ($responseInfo['http_code'] == 307) {
+      return $this->download($responseInfo["redirect_url"], true);
+    }
+
     // Return the response
-    if (in_array($httpcode, [200, 201, 202, 203, 204, 205, 206, 207, 208, 210, 226])) {
+    if (in_array($responseInfo['http_code'], [200, 201, 202, 203, 204, 205, 206, 207, 208, 210, 226])) {
       return $response;
     } else {
+      dd([
+        $params,
+        $response
+      ]);
       throw new Exception($response);
     }
   }
@@ -370,6 +379,34 @@ class Client {
    */
   public function delete($path, $query = [], $params = []) {
     return $this->request('DELETE', $path, $this->wrap($query), $this->wrap($params));
+  }
+
+  /**
+   * Process to request a download file and downloads it (mostly for reports)
+   *
+   * @param $url
+   * @param bool $gunzip
+   * @return mixed
+   * @throws Exception
+   */
+  public function download($url, $gunzip = false) {
+    if (!$gunzip) {
+      $this->baseUrl = $url;
+      return $this->get([]);
+    } else {
+      // Inits Curl with the necessary settings
+      $this->curlClient = curl_init();
+      curl_setopt($this->curlClient, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($this->curlClient, CURLOPT_URL, $url);
+      curl_setopt($this->curlClient,CURLOPT_ENCODING , '');
+
+      // Executes the request (and closes it)
+      $response = curl_exec($this->curlClient);
+      curl_close($this->curlClient);
+
+      // Decode (gunzip) the response and return it as json
+      return json_decode(gzdecode($response));
+    }
   }
 
   /**

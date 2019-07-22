@@ -14,7 +14,7 @@ use Exception;
  */
 class Reports {
 
-  const BASE_URL = 'report';
+  const BASE_URL = 'reports';
 
   /**
    * Addons constructor.
@@ -26,113 +26,126 @@ class Reports {
 
   /**
    * @param string $recordType
-   * @param string|array $segment
    * @param string|array $reportDate
+   * @param string|array $segment
    * @param array $metrics
    * @return mixed
    * @throws Exception
    */
-  private function retrieve($type, $recordType, $segment, $reportDate, $metrics) {
-    return $this->client->post([$type, $recordType, self::BASE_URL], null, [
-      'segment'     => is_array($segment    ) ? $segment    : [$segment   ],
-      'reportDate'  => is_array($reportDate ) ? $reportDate : [$reportDate],
-      'metrics'     => is_array($metrics    ) ? $metrics    : [$metrics   ],
-    ]);
+  private function retrieve($type, $recordType, $reportDate, $segment, $metrics) {
+    $params = [];
+    if (!empty($reportDate) ) $params['reportDate'] = $reportDate;
+    if (!empty($metrics)    ) $params['metrics']    = implode(',', $metrics);
+    if (!empty($segment)    ) $params['segment']    = $segment;
+
+    return $this->client->post([$type, $recordType, 'report'], null, $params);
+  }
+
+  public function download($id) {
+    $report = $this->client->get([self::BASE_URL, $id]);
+
+    // If the report is ready, download, format and return it
+    if ($report->status == 'SUCCESS') {
+      return $this->client->download($report->location);
+    }
+
+    // Otherwise return the answer as-is
+    return $report;
   }
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Campaigns-reports
-   * @param $segment
    * @param $reportDate
-   * @param $metrics
+   * @param $segment
+   * @param array $metrics
    * @return mixed
    * @throws Exception
    */
-  public function getCampaigns($segment, $reportDate, $metrics) {
-    return $this->retrieve('sp', 'campaigns', $segment, $reportDate, $metrics);
+  public function getCampaigns($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'campaigns', $reportDate, $metrics, $segment);
   }
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Campaigns-reports
-   * @param $segment
    * @param $reportDate
+   * @param $segment
    * @param $metrics
    * @return mixed
    * @throws Exception
    */
-  public function getCampaignsHSA($segment, $reportDate, $metrics) {
-    return $this->retrieve('hsa', 'campaigns', $segment, $reportDate, $metrics);
+  public function getCampaignsHSA($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('hsa', 'campaigns', $reportDate, $metrics, $segment);
   }
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Ad-Group-reports
-   * @param $segment
    * @param $reportDate
+   * @param $segment
    * @param $metrics
    * @return mixed
    * @throws Exception
    */
-  public function getAdGroups($segment, $reportDate, $metrics) {
-    return $this->retrieve('sp', 'adGroups', $segment, $reportDate, $metrics);
+  public function getAdGroups($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'adGroups', $reportDate, $metrics, $segment);
   }
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Ad-Group-reports
-   * @param $segment
    * @param $reportDate
+   * @param $segment
    * @param $metrics
    * @return mixed
    * @throws Exception
    */
-  public function getAdGroupsHSA($segment, $reportDate, $metrics) {
-    return $this->retrieve('hsa', 'adGroups', $segment, $reportDate, $metrics);
+  public function getAdGroupsHSA($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('hsa', 'adGroups', $reportDate, $metrics, $segment);
   }
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Keyword-reports
-   * @param $segment
    * @param $reportDate
+   * @param $segment
    * @param $metrics
    * @return mixed
    * @throws Exception
    */
-  public function getKeywords($segment, $reportDate, $metrics) {
-    return $this->retrieve('sp', 'keywords', $segment, $reportDate, $metrics);
+  public function getKeywords($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'keywords', $reportDate, $metrics, $segment);
   }
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Keyword-reports
-   * @param $segment
    * @param $reportDate
+   * @param $segment
    * @param $metrics
    * @return mixed
    * @throws Exception
    */
-  public function getKeywordsHSA($segment, $reportDate, $metrics) {
-    return $this->retrieve('hsa', 'keywords', $segment, $reportDate, $metrics);
+  public function getKeywordsHSA($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('hsa', 'keywords', $reportDate, $metrics, $segment);
   }
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Product-Ads-reports
-   * @param $segment
    * @param $reportDate
+   * @param $segment
    * @param $metrics
    * @return mixed
    * @throws Exception
    */
-  public function getProductAds($segment, $reportDate, $metrics) {
-    return $this->retrieve('sp', 'productAds', $segment, $reportDate, $metrics);
+  public function getProductAds($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'productAds', $reportDate, $metrics, $segment);
   }
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Product-Targeting-Reports
-   * @param $segment
    * @param $reportDate
+   * @param $segment
    * @param $metrics
    * @return mixed
    * @throws Exception
    */
-  public function getProductTargeting($segment, $reportDate, $metrics) {
-    return $this->retrieve('sp', 'productAds', $segment, $reportDate, $metrics);
+  public function getProductTargeting($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'productAds', $reportDate, $metrics, $segment);
   }
 }

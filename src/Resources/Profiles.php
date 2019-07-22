@@ -60,7 +60,7 @@ class Profiles {
    * @throws Exception
    */
   public function register($countryCode) {
-    return $this->client->put(self::BASE_URL, null, [
+    return $this->client->put([self::BASE_URL, 'register'], null, [
       'countryCode' => $countryCode
     ]);
   }
