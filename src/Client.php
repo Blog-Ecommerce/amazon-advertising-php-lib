@@ -101,6 +101,11 @@ class Client {
   private $refreshToken;
 
   /**
+   * @var string $customerId
+   */
+  private $customerId;
+
+  /**
    * @var string $region
    */
   private $region;
@@ -221,7 +226,15 @@ class Client {
    * @param $customerId
    */
   public function setCustomerId($customerId) {
+    $this->customerId = $customerId;
+
+    // Reset the header, and apply the customer id scope
+    $this->initHeader();
     $this->appendHeader(['Amazon-Advertising-API-Scope:' . $customerId]);
+  }
+
+  public function getCustomerId() {
+    return $this->getCustomerId();
   }
 
   /**
@@ -296,36 +309,46 @@ class Client {
 
     // Set the request params
     curl_setopt($this->curlClient, CURLOPT_URL, $requestUrl);
-    curl_setopt($this->curlClient, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($this->curlClient, CURLOPT_HEADER, FALSE);
+    curl_setopt($this->curlClient, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($this->curlClient, CURLOPT_HEADER, true);
+    curl_setopt($this->curlClient, CURLOPT_NOBODY, false);
     curl_setopt($this->curlClient, CURLOPT_CUSTOMREQUEST, $method);
+    curl_setopt($this->curlClient, CURLOPT_USERAGENT, 'LovelyAds');
     curl_setopt($this->curlClient, CURLOPT_HTTPHEADER, $this->requestHeader);
 
     // Add params if any
     if (!empty($params)) {
-      curl_setopt($this->curlClient, CURLOPT_POST, TRUE);
+      curl_setopt($this->curlClient, CURLOPT_POST, true);
       curl_setopt($this->curlClient, CURLOPT_POSTFIELDS, json_encode($params));
     }
 
-    // Does the request
-    $response     = json_decode(curl_exec($this->curlClient));
+    // Return headers seperatly from the Response Body
+    $response     = curl_exec($this->curlClient);
+    $header_size  = curl_getinfo($this->curlClient, CURLINFO_HEADER_SIZE);
+    $httpcode     = curl_getinfo($this->curlClient, CURLINFO_HTTP_CODE);
+    $headers      = $this->formatHeader(substr($response, 0, $header_size));
+    $body         = json_decode(substr($response, $header_size));
     $responseInfo = curl_getinfo($this->curlClient);
+
+    // Close the connection
     curl_close($this->curlClient);
 
     // If it's a 307 HTTP Status, redirect to download
-    if ($responseInfo['http_code'] == 307) {
+    if ($httpcode == 307) {
       return $this->download($responseInfo["redirect_url"], true);
     }
 
+    // If it's a 429 HTTP Status, wait the required time, and retry
+    if ($httpcode == '429') {
+      sleep($headers['Retry-After']);
+      return $this->request($method, $path, $query, $params);
+    }
+
     // Return the response
-    if (in_array($responseInfo['http_code'], [200, 201, 202, 203, 204, 205, 206, 207, 208, 210, 226])) {
-      return $response;
+    if (in_array($httpcode, [200, 201, 202, 203, 204, 205, 206, 207, 208, 210, 226])) {
+      return $body;
     } else {
-      dd([
-        $params,
-        $response
-      ]);
-      throw new Exception($response);
+      throw new Exception($response, $httpcode);
     }
   }
 
@@ -415,7 +438,27 @@ class Client {
    * @param  mixed  $value
    * @return array
    */
-  private static function wrap($value) {
+  private function wrap($value) {
     return !is_array($value) ? [$value] : $value;
+  }
+
+  /**
+   * Used to format the header into an array with key=>value
+   *
+   * @param array $headers
+   * @return array
+   */
+  private function formatHeader($headers = []) {
+    $arrHeader = [];
+    foreach (explode("\r\n", trim($headers)) as $header) {
+      if (preg_match('/(.*?): (.*)/', $header, $matches)) {
+        $arrHeader[$matches[1]] = $matches[2];
+      } else {
+        $arrHeader['Http-Code'] = $header;
+      }
+    }
+
+    // Return the header transformed to array
+    return $arrHeader;
   }
 }
