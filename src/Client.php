@@ -106,6 +106,11 @@ class Client {
   private $customerId;
 
   /**
+   * @var string $userAgent
+   */
+  private $userAgent;
+
+  /**
    * @var string $region
    */
   private $region;
@@ -195,6 +200,7 @@ class Client {
   private function initHeader() {
     $this->requestHeader = [
       'Content-Type: application/json',
+      'User-Agent: ' . $this->userAgent,
       'Authorization: Bearer ' . $this->accessToken,
       'Amazon-Advertising-API-ClientId: ' . $this->clientId
     ];
@@ -233,6 +239,13 @@ class Client {
     $this->appendHeader(['Amazon-Advertising-API-Scope:' . $customerId]);
   }
 
+  public function setUserAgent($userAgent) {
+    $this->userAgent = $userAgent;
+  }
+
+  /**
+   * @return mixed
+   */
   public function getCustomerId() {
     return $this->getCustomerId();
   }
@@ -300,7 +313,7 @@ class Client {
     $query = array_merge($this->requestQuery, $query);
 
     // Add query params
-    if (!empty($query)) {
+    if (!empty(array_filter($query))) {
       $path .= '?' . http_build_query($query);
     }
 
@@ -313,7 +326,7 @@ class Client {
     curl_setopt($this->curlClient, CURLOPT_HEADER, true);
     curl_setopt($this->curlClient, CURLOPT_NOBODY, false);
     curl_setopt($this->curlClient, CURLOPT_CUSTOMREQUEST, $method);
-    curl_setopt($this->curlClient, CURLOPT_USERAGENT, 'LovelyAds');
+    curl_setopt($this->curlClient, CURLOPT_USERAGENT, $this->userAgent);
     curl_setopt($this->curlClient, CURLOPT_HTTPHEADER, $this->requestHeader);
 
     // Add params if any
