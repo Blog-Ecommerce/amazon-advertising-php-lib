@@ -41,6 +41,11 @@ class Reports {
     return $this->client->post([$type, $recordType, 'report'], null, $params);
   }
 
+  /**
+   * @param $id
+   * @return mixed
+   * @throws Exception
+   */
   public function download($id) {
     $report = $this->client->get([self::BASE_URL, $id]);
 
@@ -61,8 +66,8 @@ class Reports {
    * @return mixed
    * @throws Exception
    */
-  public function getCampaigns($reportDate, $metrics = [], $segment = []) {
-    return $this->retrieve('sp', 'campaigns', $reportDate, $metrics, $segment);
+  public function getCampaigns($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'campaigns', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -73,8 +78,8 @@ class Reports {
    * @return mixed
    * @throws Exception
    */
-  public function getCampaignsHSA($reportDate, $metrics = [], $segment = []) {
-    return $this->retrieve('hsa', 'campaigns', $reportDate, $metrics, $segment);
+  public function getCampaignsHSA($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('hsa', 'campaigns', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -85,8 +90,8 @@ class Reports {
    * @return mixed
    * @throws Exception
    */
-  public function getAdGroups($reportDate, $metrics = [], $segment = []) {
-    return $this->retrieve('sp', 'adGroups', $reportDate, $metrics, $segment);
+  public function getAdGroups($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'adGroups', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -97,8 +102,8 @@ class Reports {
    * @return mixed
    * @throws Exception
    */
-  public function getAdGroupsHSA($reportDate, $metrics = [], $segment = []) {
-    return $this->retrieve('hsa', 'adGroups', $reportDate, $metrics, $segment);
+  public function getAdGroupsHSA($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('hsa', 'adGroups', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -109,8 +114,8 @@ class Reports {
    * @return mixed
    * @throws Exception
    */
-  public function getKeywords($reportDate, $metrics = [], $segment = []) {
-    return $this->retrieve('sp', 'keywords', $reportDate, $metrics, $segment);
+  public function getKeywords($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'keywords', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -121,8 +126,8 @@ class Reports {
    * @return mixed
    * @throws Exception
    */
-  public function getKeywordsHSA($reportDate, $metrics = [], $segment = []) {
-    return $this->retrieve('hsa', 'keywords', $reportDate, $metrics, $segment);
+  public function getKeywordsHSA($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('hsa', 'keywords', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -133,8 +138,8 @@ class Reports {
    * @return mixed
    * @throws Exception
    */
-  public function getProductAds($reportDate, $metrics = [], $segment = []) {
-    return $this->retrieve('sp', 'productAds', $reportDate, $metrics, $segment);
+  public function getProductAds($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'productAds', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -145,7 +150,7 @@ class Reports {
    * @return mixed
    * @throws Exception
    */
-  public function getProductTargeting($reportDate, $metrics = [], $segment = []) {
-    return $this->retrieve('sp', 'productAds', $reportDate, $metrics, $segment);
+  public function getProductTargeting($reportDate, $segment = null, $metrics = []) {
+    return $this->retrieve('sp', 'productAds', $reportDate, $segment, $metrics);
   }
 }

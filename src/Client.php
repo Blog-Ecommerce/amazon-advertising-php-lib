@@ -440,6 +440,9 @@ class Client {
       $response = curl_exec($this->curlClient);
       curl_close($this->curlClient);
 
+      // (re)Init the base url
+      $this->initBaseUrl();
+
       // Decode (gunzip) the response and return it as json
       return json_decode(gzdecode($response));
     }
