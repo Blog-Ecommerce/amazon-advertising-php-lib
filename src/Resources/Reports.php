@@ -151,6 +151,6 @@ class Reports {
    * @throws Exception
    */
   public function getProductTargeting($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve('sp', 'productAds', $reportDate, $segment, $metrics);
+    return $this->retrieve('sp', 'targets', $reportDate, $segment, $metrics);
   }
 }
