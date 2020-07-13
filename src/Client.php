@@ -7,6 +7,7 @@ use CapsuleB\AmazonAdvertising\Resources\Keywords;
 use CapsuleB\AmazonAdvertising\Resources\NegativeKeywords;
 use CapsuleB\AmazonAdvertising\Resources\Campaigns;
 use CapsuleB\AmazonAdvertising\Resources\CampaignsNegativeKeywords;
+use CapsuleB\AmazonAdvertising\Resources\NegativeProductTargeting;
 use CapsuleB\AmazonAdvertising\Resources\Portfolios;
 use CapsuleB\AmazonAdvertising\Resources\ProductAds;
 use CapsuleB\AmazonAdvertising\Resources\ProductTargeting;
@@ -28,6 +29,7 @@ use Exception;
  * @property Portfolios                 $portfolios
  * @property ProductAds                 $productAds
  * @property ProductTargeting           $productTargeting
+ * @property NegativeProductTargeting   $negativeProductTargeting
  * @property Profiles                   $profiles
  * @property Reports                    $reports
  * @property Snapshots                  $snapshots
@@ -155,6 +157,7 @@ class Client {
     $this->portfolios                 = new Portfolios($this);
     $this->productAds                 = new ProductAds($this);
     $this->productTargeting           = new ProductTargeting($this);
+    $this->negativeProductTargeting   = new NegativeProductTargeting($this);
     $this->profiles                   = new Profiles($this);
     $this->reports                    = new Reports($this);
     $this->snapshots                  = new Snapshots($this);
