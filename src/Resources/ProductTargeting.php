@@ -91,7 +91,7 @@ class ProductTargeting {
    * @throws Exception
    */
   public function archive($targetId) {
-    return $this->client->delete(self::BASE_URL_SP, $targetId);
+    return $this->client->delete([self::BASE_URL_SP, $targetId]);
   }
 
   /**

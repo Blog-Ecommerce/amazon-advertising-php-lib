@@ -16,7 +16,8 @@
   "require": {
     "php": ">=7.1.0",
     "ext-curl": "*",
-    "ext-zlib": "*"
+    "ext-zlib": "*",
+    "ext-json": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0"
