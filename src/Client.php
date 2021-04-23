@@ -43,17 +43,17 @@ class Client {
   const BASE_URL_SANDBOX = 'https://advertising-api-test.amazon.com/v2';
 
   /**
-   * North America (NA). Covers US and CA marketplaces
+   * North America (NA). Covers US, CA, MX, and BR marketplaces
    */
   const BASE_URL_NA = 'https://advertising-api.amazon.com/v2';
 
   /**
-   * Europe (EU). Covers UK, FR, IT, ES, and DE marketplaces
+   * Europe (EU). Covers UK, FR, IT, ES, DE, NL, and AE marketplaces
    */
   const BASE_URL_EU = 'https://advertising-api-eu.amazon.com/v2';
 
   /**
-   * Far East (FE). Covers JP and AU marketplaces.
+   * Far East (FE). Covers JP, AU, and SG marketplaces.
    */
   const BASE_URL_FE = 'https://advertising-api-fe.amazon.com/v2';
 
@@ -175,6 +175,8 @@ class Client {
         case 'NA':
         case 'US':
         case 'CA':
+        case 'MX':
+        case 'BR':
           $this->baseUrl = self::BASE_URL_NA;
           break;
         case 'EU':
@@ -183,11 +185,14 @@ class Client {
         case 'IT':
         case 'ES':
         case 'DE':
+        case 'NL':
+        case 'AE':
           $this->baseUrl = self::BASE_URL_EU;
           break;
         case 'FE':
         case 'JP':
         case 'AU':
+        case 'SG':
           $this->baseUrl = self::BASE_URL_FE;
           break;
         default:
