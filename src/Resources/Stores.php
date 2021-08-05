@@ -13,7 +13,7 @@ use Exception;
  */
 class Stores {
 
-  const BASE_URL = 'stores';
+  const BASE_URL = 'v2/stores';
 
   /**
    * Addons constructor.

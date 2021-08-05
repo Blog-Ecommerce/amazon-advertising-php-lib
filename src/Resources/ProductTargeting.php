@@ -14,7 +14,7 @@ use Exception;
  */
 class ProductTargeting {
 
-  const BASE_URL_SP = 'sp/targets';
+  const BASE_URL_SP = 'v2/sp/targets';
 
   /**
    * Addons constructor.

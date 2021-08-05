@@ -14,8 +14,8 @@ use Exception;
  */
 class Keywords {
 
-  const BASE_URL_SP   = 'sp/keywords';
-  const BASE_URL_HSA  = 'hsa/keywords';
+  const BASE_URL_SP   = 'v2/sp/keywords';
+  const BASE_URL_HSA  = 'v2/hsa/keywords';
 
   /**
    * Addons constructor.

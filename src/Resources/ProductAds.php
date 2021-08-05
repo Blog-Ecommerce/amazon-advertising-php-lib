@@ -14,7 +14,7 @@ use Exception;
  */
 class ProductAds {
 
-  const BASE_URL_SP = 'sp/productAds';
+  const BASE_URL_SP = 'v2/sp/productAds';
 
   /**
    * Addons constructor.

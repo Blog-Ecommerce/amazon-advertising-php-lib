@@ -10,6 +10,7 @@ use CapsuleB\AmazonAdvertising\Resources\CampaignsNegativeKeywords;
 use CapsuleB\AmazonAdvertising\Resources\NegativeProductTargeting;
 use CapsuleB\AmazonAdvertising\Resources\Portfolios;
 use CapsuleB\AmazonAdvertising\Resources\ProductAds;
+use CapsuleB\AmazonAdvertising\Resources\ProductSelector;
 use CapsuleB\AmazonAdvertising\Resources\ProductTargeting;
 use CapsuleB\AmazonAdvertising\Resources\Profiles;
 use CapsuleB\AmazonAdvertising\Resources\Reports;
@@ -27,6 +28,7 @@ use Exception;
  * @property Campaigns                  $campaigns
  * @property CampaignsNegativeKeywords  $campaignsNegativeKeywords
  * @property Portfolios                 $portfolios
+ * @property ProductSelector            $productSelector
  * @property ProductAds                 $productAds
  * @property ProductTargeting           $productTargeting
  * @property NegativeProductTargeting   $negativeProductTargeting
@@ -40,22 +42,22 @@ class Client {
   /**
    * Sandbox Environment. Covers all marketplaces
    */
-  const BASE_URL_SANDBOX = 'https://advertising-api-test.amazon.com/v2';
+  const BASE_URL_SANDBOX = 'https://advertising-api-test.amazon.com';
 
   /**
    * North America (NA). Covers US, CA, MX, and BR marketplaces
    */
-  const BASE_URL_NA = 'https://advertising-api.amazon.com/v2';
+  const BASE_URL_NA = 'https://advertising-api.amazon.com';
 
   /**
    * Europe (EU). Covers UK, FR, IT, ES, DE, NL, and AE marketplaces
    */
-  const BASE_URL_EU = 'https://advertising-api-eu.amazon.com/v2';
+  const BASE_URL_EU = 'https://advertising-api-eu.amazon.com';
 
   /**
    * Far East (FE). Covers JP, AU, and SG marketplaces.
    */
-  const BASE_URL_FE = 'https://advertising-api-fe.amazon.com/v2';
+  const BASE_URL_FE = 'https://advertising-api-fe.amazon.com';
 
   /**
    * URL used to refresh the token
@@ -156,6 +158,7 @@ class Client {
     $this->campaignsNegativeKeywords  = new CampaignsNegativeKeywords($this);
     $this->portfolios                 = new Portfolios($this);
     $this->productAds                 = new ProductAds($this);
+    $this->productSelector            = new ProductSelector($this);
     $this->productTargeting           = new ProductTargeting($this);
     $this->negativeProductTargeting   = new NegativeProductTargeting($this);
     $this->profiles                   = new Profiles($this);

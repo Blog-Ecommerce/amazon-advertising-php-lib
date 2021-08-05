@@ -14,7 +14,7 @@ use Exception;
  */
 class Reports {
 
-  const BASE_URL = 'reports';
+  const BASE_URL = 'v2/reports';
 
   /**
    * Addons constructor.

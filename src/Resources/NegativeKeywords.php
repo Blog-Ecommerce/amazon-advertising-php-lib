@@ -13,7 +13,7 @@ use Exception;
  */
 class NegativeKeywords {
 
-  const BASE_URL_SP = 'sp/negativeKeywords';
+  const BASE_URL_SP = 'v2/sp/negativeKeywords';
 
   /**
    * Addons constructor.

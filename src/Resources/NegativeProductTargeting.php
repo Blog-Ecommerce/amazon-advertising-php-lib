@@ -14,7 +14,7 @@ use Exception;
  */
 class NegativeProductTargeting {
 
-  const BASE_URL_SP = 'sp/negativeTargets';
+  const BASE_URL_SP = 'v2/sp/negativeTargets';
 
   /**
    * Addons constructor.

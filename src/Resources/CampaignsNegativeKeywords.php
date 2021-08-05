@@ -14,7 +14,7 @@ use Exception;
  */
 class CampaignsNegativeKeywords {
 
-  const BASE_URL_SP = 'sp/campaignNegativeKeywords';
+  const BASE_URL_SP = 'v2/sp/campaignNegativeKeywords';
 
   /**
    * Addons constructor.

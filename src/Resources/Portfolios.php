@@ -14,7 +14,7 @@ use Exception;
  */
 class Portfolios {
 
-  const BASE_URL = 'portfolios';
+  const BASE_URL = 'v2/portfolios';
 
   /**
    * Addons constructor.

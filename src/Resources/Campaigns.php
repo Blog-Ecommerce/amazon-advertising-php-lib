@@ -14,8 +14,8 @@ use Exception;
  */
 class Campaigns{
 
-  const BASE_URL_SP   = 'sp/campaigns';
-  const BASE_URL_HSA  = 'hsa/campaigns';
+  const BASE_URL_SP   = 'v2/sp/campaigns';
+  const BASE_URL_HSA  = 'v2/hsa/campaigns';
 
   /**
    * Addons constructor.

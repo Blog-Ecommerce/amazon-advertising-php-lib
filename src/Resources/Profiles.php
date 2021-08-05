@@ -14,7 +14,7 @@ use Exception;
  */
 class Profiles {
 
-  const BASE_URL = 'profiles';
+  const BASE_URL = 'v2/profiles';
 
   /**
    * Addons constructor.

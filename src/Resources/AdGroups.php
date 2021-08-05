@@ -14,7 +14,7 @@ use Exception;
  */
 class AdGroups {
 
-  const BASE_URL_SP = 'sp/adGroups';
+  const BASE_URL_SP = 'v2/sp/adGroups';
 
   /**
    * Addons constructor.

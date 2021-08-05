@@ -14,7 +14,7 @@ use Exception;
  */
 class Snapshots {
 
-  const BASE_URL = 'snapshot';
+  const BASE_URL = 'v2/snapshot';
 
   /**
    * Addons constructor.
