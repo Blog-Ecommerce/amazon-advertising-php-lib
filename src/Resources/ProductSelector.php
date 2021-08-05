@@ -14,7 +14,7 @@ use Exception;
  */
 class ProductSelector {
 
-  const BASE_URL_SP = 'v2/product';
+  const BASE_URL_SP = 'product';
 
   /**
    * Addons constructor.
