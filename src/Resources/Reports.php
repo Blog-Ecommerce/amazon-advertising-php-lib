@@ -14,7 +14,9 @@ use Exception;
  */
 class Reports {
 
-  const BASE_URL = 'v2/reports';
+  const BASE_URL  = 'v2/reports';
+  const BASE_SP   = 'v2/sp';
+  const BASE_HSA  = 'v2/hsa';
 
   /**
    * Addons constructor.
@@ -67,7 +69,7 @@ class Reports {
    * @throws Exception
    */
   public function getCampaigns($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve('sp', 'campaigns', $reportDate, $segment, $metrics);
+    return $this->retrieve(self::BASE_SP, 'campaigns', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -79,7 +81,7 @@ class Reports {
    * @throws Exception
    */
   public function getCampaignsHSA($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve('hsa', 'campaigns', $reportDate, $segment, $metrics);
+    return $this->retrieve(self::BASE_HSA, 'campaigns', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -91,7 +93,7 @@ class Reports {
    * @throws Exception
    */
   public function getAdGroups($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve('sp', 'adGroups', $reportDate, $segment, $metrics);
+    return $this->retrieve(self::BASE_SP, 'adGroups', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -103,7 +105,7 @@ class Reports {
    * @throws Exception
    */
   public function getAdGroupsHSA($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve('hsa', 'adGroups', $reportDate, $segment, $metrics);
+    return $this->retrieve(self::BASE_HSA, 'adGroups', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -115,7 +117,7 @@ class Reports {
    * @throws Exception
    */
   public function getKeywords($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve('sp', 'keywords', $reportDate, $segment, $metrics);
+    return $this->retrieve(self::BASE_SP, 'keywords', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -127,7 +129,7 @@ class Reports {
    * @throws Exception
    */
   public function getKeywordsHSA($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve('hsa', 'keywords', $reportDate, $segment, $metrics);
+    return $this->retrieve(self::BASE_HSA, 'keywords', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -139,7 +141,7 @@ class Reports {
    * @throws Exception
    */
   public function getProductAds($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve('sp', 'productAds', $reportDate, $segment, $metrics);
+    return $this->retrieve(self::BASE_SP, 'productAds', $reportDate, $segment, $metrics);
   }
 
   /**
@@ -151,6 +153,6 @@ class Reports {
    * @throws Exception
    */
   public function getProductTargeting($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve('sp', 'targets', $reportDate, $segment, $metrics);
+    return $this->retrieve(self::BASE_SP, 'targets', $reportDate, $segment, $metrics);
   }
 }
