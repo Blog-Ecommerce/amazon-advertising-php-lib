@@ -125,6 +125,11 @@ class Client {
   private $sandbox;
 
   /**
+   * @var int $retryAfter
+   */
+  private $retryAfter = 0;
+
+  /**
    * Client constructor.
    * @param $clientId
    * @param $clientSecret
@@ -364,8 +369,11 @@ class Client {
 
     // If it's a 429 HTTP Status, wait the required time, and retry
     if ($httpcode == '429') {
-      sleep($headers['Retry-After']);
+      $this->retryAfter += 10;
+      sleep($headers['Retry-After'] ?? $this->retryAfter);
       return $this->request($method, $path, $query, $params);
+    } else {
+      $this->retryAfter = 0;
     }
 
     // Return the response
