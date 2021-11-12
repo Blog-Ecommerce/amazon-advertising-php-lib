@@ -367,8 +367,8 @@ class Client {
       return $this->download($responseInfo["redirect_url"], true);
     }
 
-    // If it's a 429 HTTP Status, wait the required time, and retry
-    if ($httpcode == '429') {
+    // If it's a 429 HTTP Status, wait the required time, and retry up to a 10mn limit (total of 35minutes)
+    if ($httpcode == '429' && $this->retryAfter <= 200) {
       $this->retryAfter += 10;
       sleep($headers['Retry-After'] ?? $this->retryAfter);
       return $this->request($method, $path, $query, $params);
