@@ -2,8 +2,8 @@
 
 namespace CapsuleB\AmazonAdvertising\Resources;
 
-use CapsuleB\AmazonAdvertising\Client;
 use Exception;
+use CapsuleB\AmazonAdvertising\Client;
 
 /**
  * Class ProductEligibility
@@ -30,7 +30,7 @@ class ProductEligibility {
    * @return array
    * @throws Exception
    */
-  public function metadata($params = []) {
+  public function list($params = []) {
     return $this->client->post([self::BASE_URL_SP, 'product', 'list'], null, $params);
   }
 
