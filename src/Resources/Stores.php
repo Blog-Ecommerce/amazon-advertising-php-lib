@@ -8,6 +8,7 @@ use Exception;
 /**
  * Class Stores
  * @package CapsuleB\AmazonAdvertising\Resources
+ * @see https://advertising.amazon.com/API/docs/v2/reference/stores
  *
  * @property Client $client
  */

@@ -2,6 +2,7 @@
 
 namespace CapsuleB\AmazonAdvertising;
 
+use Exception;
 use CapsuleB\AmazonAdvertising\Resources\AdGroups;
 use CapsuleB\AmazonAdvertising\Resources\Keywords;
 use CapsuleB\AmazonAdvertising\Resources\NegativeKeywords;
@@ -10,13 +11,13 @@ use CapsuleB\AmazonAdvertising\Resources\CampaignsNegativeKeywords;
 use CapsuleB\AmazonAdvertising\Resources\NegativeProductTargeting;
 use CapsuleB\AmazonAdvertising\Resources\Portfolios;
 use CapsuleB\AmazonAdvertising\Resources\ProductAds;
+use CapsuleB\AmazonAdvertising\Resources\ProductEligibility;
 use CapsuleB\AmazonAdvertising\Resources\ProductSelector;
 use CapsuleB\AmazonAdvertising\Resources\ProductTargeting;
 use CapsuleB\AmazonAdvertising\Resources\Profiles;
 use CapsuleB\AmazonAdvertising\Resources\Reports;
 use CapsuleB\AmazonAdvertising\Resources\Snapshots;
 use CapsuleB\AmazonAdvertising\Resources\Stores;
-use Exception;
 
 /**
  * Class Client
@@ -28,6 +29,7 @@ use Exception;
  * @property Campaigns                  $campaigns
  * @property CampaignsNegativeKeywords  $campaignsNegativeKeywords
  * @property Portfolios                 $portfolios
+ * @property ProductEligibility         $productEligibility
  * @property ProductSelector            $productSelector
  * @property ProductAds                 $productAds
  * @property ProductTargeting           $productTargeting
@@ -138,7 +140,7 @@ class Client {
    * @param null $region
    * @param bool $sandbox
    */
-  public function __construct($clientId, $clientSecret, $accessToken, $refreshToken = null, $region = null, $sandbox = true) {
+  public function __construct($clientId, $clientSecret, $accessToken, $refreshToken = null, $region = null, bool $sandbox = true) {
     // Init the Curl Client
     $this->curlClient = curl_init();
 
@@ -163,6 +165,7 @@ class Client {
     $this->campaignsNegativeKeywords  = new CampaignsNegativeKeywords($this);
     $this->portfolios                 = new Portfolios($this);
     $this->productAds                 = new ProductAds($this);
+    $this->productEligibility         = new ProductEligibility($this);
     $this->productSelector            = new ProductSelector($this);
     $this->productTargeting           = new ProductTargeting($this);
     $this->negativeProductTargeting   = new NegativeProductTargeting($this);
@@ -232,14 +235,14 @@ class Client {
   /**
    * @param array $query
    */
-  protected function appendQuery($query = []) {
+  protected function appendQuery(array $query = []) {
     $this->requestQuery += $this->wrap($query);
   }
 
   /**
    * @param array $header
    */
-  protected function appendHeader($header = []) {
+  protected function appendHeader(array $header = []) {
     $this->requestHeader = array_merge($this->requestHeader, $this->wrap($header));
   }
 
@@ -260,10 +263,10 @@ class Client {
   }
 
   /**
-   * @return mixed
+   * @return string
    */
-  public function getCustomerId() {
-    return $this->getCustomerId();
+  public function getCustomerId(): string {
+    return $this->customerId;
   }
 
   /**
@@ -271,7 +274,7 @@ class Client {
    *
    * @return bool
    */
-  public function isSandbox() {
+  public function isSandbox(): bool {
     return $this->sandbox;
   }
 
@@ -316,7 +319,7 @@ class Client {
    * @return array|mixed|object
    * @throws Exception
    */
-  protected function request($method, $path, $query = [], $params = []) {
+  protected function request($method, $path, array $query = [], array $params = []) {
     // Reset any previous request
     $this->curlClient = curl_init();
 
@@ -393,7 +396,7 @@ class Client {
    * @return mixed
    * @throws Exception
    */
-  public function get($path, $query = [], $params = []) {
+  public function get($path, array $query = [], array $params = []) {
     return $this->request('GET', $path, $this->wrap($query), $this->wrap($params));
   }
 
@@ -406,7 +409,7 @@ class Client {
    * @return mixed
    * @throws Exception
    */
-  public function post($path, $query = [], $params = []) {
+  public function post($path, array $query = [], array $params = []) {
     return $this->request('POST', $path, $this->wrap($query), $this->wrap($params));
   }
 
@@ -419,7 +422,7 @@ class Client {
    * @return mixed
    * @throws Exception
    */
-  public function put($path, $query = [], $params = []) {
+  public function put($path, array $query = [], array $params = []) {
     return $this->request('PUT', $path, $this->wrap($query), $this->wrap($params));
   }
 
@@ -432,7 +435,7 @@ class Client {
    * @return mixed
    * @throws Exception
    */
-  public function delete($path, $query = [], $params = []) {
+  public function delete($path, array $query = [], array $params = []) {
     return $this->request('DELETE', $path, $this->wrap($query), $this->wrap($params));
   }
 
@@ -444,7 +447,7 @@ class Client {
    * @return mixed
    * @throws Exception
    */
-  public function download($url, $gunzip = false) {
+  public function download($url, bool $gunzip) {
     if (!$gunzip) {
       $this->baseUrl = $url;
       return $this->get([]);
@@ -473,7 +476,7 @@ class Client {
    * @param  mixed  $value
    * @return array
    */
-  private function wrap($value) {
+  private function wrap($value): array {
     return !is_array($value) ? [$value] : $value;
   }
 
@@ -483,7 +486,7 @@ class Client {
    * @param array $headers
    * @return array
    */
-  private function formatHeader($headers = []) {
+  private function formatHeader($headers = []): array {
     $arrHeader = [];
     foreach (explode("\r\n", trim($headers)) as $header) {
       if (preg_match('/(.*?): (.*)/', $header, $matches)) {
