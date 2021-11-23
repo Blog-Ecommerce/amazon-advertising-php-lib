@@ -391,12 +391,12 @@ class Client {
    * GET Method
    *
    * @param $path
-   * @param array $query
-   * @param array $params
+   * @param array|null $query
+   * @param array|null $params
    * @return mixed
    * @throws Exception
    */
-  public function get($path, array $query = [], array $params = []) {
+  public function get($path, ?array $query = [], ?array $params = []) {
     return $this->request('GET', $path, $this->wrap($query), $this->wrap($params));
   }
 
@@ -404,12 +404,12 @@ class Client {
    * POST Method
    *
    * @param $path
-   * @param array $query
-   * @param array $params
+   * @param array|null $query
+   * @param array|null $params
    * @return mixed
    * @throws Exception
    */
-  public function post($path, array $query = [], array $params = []) {
+  public function post($path, ?array $query = [], ?array $params = []) {
     return $this->request('POST', $path, $this->wrap($query), $this->wrap($params));
   }
 
@@ -417,12 +417,12 @@ class Client {
    * PUT Method
    *
    * @param $path
-   * @param array $query
-   * @param array $params
+   * @param array|null $query
+   * @param array|null $params
    * @return mixed
    * @throws Exception
    */
-  public function put($path, array $query = [], array $params = []) {
+  public function put($path, ?array $query = [], ?array $params = []) {
     return $this->request('PUT', $path, $this->wrap($query), $this->wrap($params));
   }
 
@@ -430,12 +430,12 @@ class Client {
    * DELETE Method
    *
    * @param $path
-   * @param array $query
-   * @param array $params
+   * @param array|null $query
+   * @param array|null $params
    * @return mixed
    * @throws Exception
    */
-  public function delete($path, array $query = [], array $params = []) {
+  public function delete($path, ?array $query = [], ?array $params = []) {
     return $this->request('DELETE', $path, $this->wrap($query), $this->wrap($params));
   }
 
