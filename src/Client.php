@@ -447,7 +447,7 @@ class Client {
    * @return mixed
    * @throws Exception
    */
-  public function download($url, bool $gunzip) {
+  public function download($url, bool $gunzip = false) {
     if (!$gunzip) {
       $this->baseUrl = $url;
       return $this->get([]);
