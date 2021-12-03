@@ -129,7 +129,7 @@ class Client {
   /**
    * @var int $retryAfter
    */
-  private $retryAfter = 0;
+  private $retryAfter = 2;
 
   /**
    * Client constructor.
@@ -370,13 +370,20 @@ class Client {
       return $this->download($responseInfo["redirect_url"], true);
     }
 
-    // If it's a 429 HTTP Status, wait the required time, and retry up to a 10mn limit (total of 35minutes)
-    if ($httpcode == '429' && $this->retryAfter <= 200) {
-      $this->retryAfter += 10;
-      sleep($headers['Retry-After'] ?? $this->retryAfter);
+    // If it's a 429 HTTP Status, wait the required time if provided
+    // otherwise exponential starting from 2sec with a max of 2048 seconds (aka ~34 minutes)
+    if ($httpcode == '429' && $this->retryAfter < 2048) {
+      if (!empty($headers['Retry-After'])) {
+        $this->retryAfter += $headers['Retry-After'];
+      } else {
+        $this->retryAfter *= 2;
+      }
+
+      // Sleep for the amount of time defined
+      sleep($this->retryAfter);
       return $this->request($method, $path, $query, $params);
     } else {
-      $this->retryAfter = 0;
+      $this->retryAfter = 2;
     }
 
     // Return the response
