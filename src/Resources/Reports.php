@@ -14,145 +14,169 @@ use Exception;
  */
 class Reports {
 
-  const BASE_URL  = 'v2/reports';
-  const BASE_SP   = 'v2/sp';
-  const BASE_HSA  = 'v2/hsa';
+    const BASE_URL = 'reporting/reports';
 
-  /**
-   * Addons constructor.
-   * @param Client $client
-   */
-  public function __construct(Client $client) {
-    $this->client = $client;
-  }
-
-  /**
-   * @param string $recordType
-   * @param string|array $reportDate
-   * @param string|array $segment
-   * @param array $metrics
-   * @return mixed
-   * @throws Exception
-   */
-  private function retrieve($type, $recordType, $reportDate, $segment, $metrics) {
-    $params = [];
-    if (!empty($reportDate) ) $params['reportDate'] = $reportDate;
-    if (!empty($metrics)    ) $params['metrics']    = implode(',', $metrics);
-    if (!empty($segment)    ) $params['segment']    = $segment;
-
-    return $this->client->post([$type, $recordType, 'report'], null, $params);
-  }
-
-  /**
-   * @param $id
-   * @return mixed
-   * @throws Exception
-   */
-  public function download($id) {
-    $report = $this->client->get([self::BASE_URL, $id]);
-
-    // If the report is ready, download, format and return it
-    if ($report->status == 'SUCCESS') {
-      return $this->client->download($report->location);
+    /**
+     * Addons constructor.
+     * @param Client $client
+     */
+    public function __construct(Client $client) {
+        $this->client = $client;
     }
 
-    // Otherwise return the answer as-is
-    return $report;
-  }
+    /**
+     * @param string $recordType
+     * @param string|array $reportDate
+     * @param string|array $segment
+     * @param array $columns
+     * @param array $groupBy
+     * @param array $keywordType
+     * @return mixed
+     * @throws Exception
+     */
+    private function retrieve(string $recordType, $reportDate, $segment, array $columns, array $groupBy = [], array $keywordType = []) {
+        $params = [
+            'configuration' => [
+                'adProduct' => 'SPONSORED_PRODUCTS',
+                'reportTypeId' => $recordType,
+                'columns' => $columns,
+                'groupBy' => $groupBy,
+                'timeUnit' => 'DAILY',
+                'format' => 'GZIP_JSON',
+            ]
+        ];
 
-  /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Campaigns-reports
-   * @param $reportDate
-   * @param $segment
-   * @param array $metrics
-   * @return mixed
-   * @throws Exception
-   */
-  public function getCampaigns($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve(self::BASE_SP, 'campaigns', $reportDate, $segment, $metrics);
-  }
+        // Add the additional params
+        if (!empty($keywordType)) $params['configuration']['filters'][] = ['field' => 'keywordType', 'values' => $keywordType];
+        if (!empty($segment)    ) $params['configuration']['segment']     = $segment;
+        if (!empty($reportDate) ) {
+            $params['startDate']    = $reportDate;
+            $params['endDate']      = $reportDate;
+        }
 
-  /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Campaigns-reports
-   * @param $reportDate
-   * @param $segment
-   * @param $metrics
-   * @return mixed
-   * @throws Exception
-   */
-  public function getCampaignsHSA($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve(self::BASE_HSA, 'campaigns', $reportDate, $segment, $metrics);
-  }
+        return $this->client->post(self::BASE_URL, null, $params);
+    }
 
-  /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Ad-Group-reports
-   * @param $reportDate
-   * @param $segment
-   * @param $metrics
-   * @return mixed
-   * @throws Exception
-   */
-  public function getAdGroups($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve(self::BASE_SP, 'adGroups', $reportDate, $segment, $metrics);
-  }
+    /**
+     * @param $id
+     * @return mixed
+     * @throws Exception
+     */
+    public function download($id) {
+        $report = $this->client->get([self::BASE_URL, $id]);
 
-  /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Ad-Group-reports
-   * @param $reportDate
-   * @param $segment
-   * @param $metrics
-   * @return mixed
-   * @throws Exception
-   */
-  public function getAdGroupsHSA($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve(self::BASE_HSA, 'adGroups', $reportDate, $segment, $metrics);
-  }
+        // If the report is ready, download, format and return it
+        if ($report->status == 'SUCCESS') {
+            return $this->client->download($report->location);
+        }
 
-  /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Keyword-reports
-   * @param $reportDate
-   * @param $segment
-   * @param $metrics
-   * @return mixed
-   * @throws Exception
-   */
-  public function getKeywords($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve(self::BASE_SP, 'keywords', $reportDate, $segment, $metrics);
-  }
+        // Otherwise return the answer as-is
+        return $report;
+    }
 
-  /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Keyword-reports
-   * @param $reportDate
-   * @param $segment
-   * @param $metrics
-   * @return mixed
-   * @throws Exception
-   */
-  public function getKeywordsHSA($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve(self::BASE_HSA, 'keywords', $reportDate, $segment, $metrics);
-  }
+    /**
+     * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Campaigns-reports
+     * @param $reportDate
+     * @param $segment
+     * @param array $columns
+     * @return mixed
+     * @throws Exception
+     */
+    public function getCampaigns($reportDate, $segment = null, array $columns = []) {
+        return $this->retrieve('spCampaigns', $reportDate, $segment, $columns,
+            ['campaign']);
+    }
 
-  /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Product-Ads-reports
-   * @param $reportDate
-   * @param $segment
-   * @param $metrics
-   * @return mixed
-   * @throws Exception
-   */
-  public function getProductAds($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve(self::BASE_SP, 'productAds', $reportDate, $segment, $metrics);
-  }
+    /**
+     * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Campaigns-reports
+     * @param $reportDate
+     * @param $segment
+     * @param array $columns
+     * @return mixed
+     * @throws Exception
+     */
+    public function getCampaignsHSA($reportDate, $segment = null, array $columns = []) {
+        return null;
+        // return $this->retrieve('campaigns', $reportDate, $segment, $columns);
+    }
 
-  /**
-   * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Product-Targeting-Reports
-   * @param $reportDate
-   * @param $segment
-   * @param $metrics
-   * @return mixed
-   * @throws Exception
-   */
-  public function getProductTargeting($reportDate, $segment = null, $metrics = []) {
-    return $this->retrieve(self::BASE_SP, 'targets', $reportDate, $segment, $metrics);
-  }
+    /**
+     * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Ad-Group-reports
+     * @param $reportDate
+     * @param $segment
+     * @param array $columns
+     * @return mixed
+     * @throws Exception
+     */
+    public function getAdGroups($reportDate, $segment = null, array $columns = []) {
+        return $this->retrieve('spCampaigns', $reportDate, $segment, $columns,
+            ['campaign', 'adGroup']);
+    }
+
+    /**
+     * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Ad-Group-reports
+     * @param $reportDate
+     * @param $segment
+     * @param array $columns
+     * @return mixed
+     * @throws Exception
+     */
+    public function getAdGroupsHSA($reportDate, $segment = null, array $columns = []) {
+        return null;
+        // return $this->retrieve('adGroups', $reportDate, $segment, $columns);
+    }
+
+    /**
+     * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Keyword-reports
+     * @param $reportDate
+     * @param $segment
+     * @param array $columns
+     * @return mixed
+     * @throws Exception
+     */
+    public function getKeywords($reportDate, $segment = null, array $columns = []) {
+        return $this->retrieve('spTargeting', $reportDate, $segment, $columns,
+            ['targeting'],
+            ['BROAD', 'PHRASE', 'EXACT']);
+    }
+
+    /**
+     * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Keyword-reports
+     * @param $reportDate
+     * @param $segment
+     * @param array $columns
+     * @return mixed
+     * @throws Exception
+     */
+    public function getKeywordsHSA($reportDate, $segment = null, array $columns = []) {
+        return null;
+        // return $this->retrieve('keywords', $reportDate, $segment, $columns);
+    }
+
+    /**
+     * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Product-Ads-reports
+     * @param $reportDate
+     * @param $segment
+     * @param array $columns
+     * @return mixed
+     * @throws Exception
+     */
+    public function getProductAds($reportDate, $segment = null, array $columns = []) {
+        return $this->retrieve('spAdvertisedProduct', $reportDate, $segment, $columns,
+            ['advertiser']);
+    }
+
+    /**
+     * @see https://advertising.amazon.com/API/docs/v2/reference/reports#Product-Targeting-Reports
+     * @param $reportDate
+     * @param $segment
+     * @param array $columns
+     * @return mixed
+     * @throws Exception
+     */
+    public function getProductTargeting($reportDate, $segment = null, array $columns = []) {
+        return $this->retrieve('spTargeting', $reportDate, $segment, $columns,
+            ['targeting'],
+            ['TARGETING_EXPRESSION', 'TARGETING_EXPRESSION_PREDEFINED']);
+    }
 }
