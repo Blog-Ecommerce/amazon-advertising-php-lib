@@ -132,6 +132,81 @@ class Client {
   private $retryAfter = 2;
 
   /**
+   * @var AdGroups
+   */
+  public $adGroups;
+
+  /**
+   * @var Keywords
+   */
+  public $keywords;
+
+  /**
+   * @var NegativeKeywords
+   */
+  public $negativeKeywords;
+
+  /**
+   * @var Campaigns
+   */
+  public $campaigns;
+
+  /**
+   * @var CampaignsNegativeKeywords
+   */
+  public $campaignsNegativeKeywords;
+
+  /**
+   * @var Portfolios
+   */
+  public $portfolios;
+
+  /**
+   * @var ProductEligibility
+   */
+  public $productEligibility;
+
+  /**
+   * @var ProductSelector
+   */
+  public $productSelector;
+
+  /**
+   * @var ProductAds
+   */
+  public $productAds;
+
+  /**
+   * @var ProductTargeting
+   */
+  public $productTargeting;
+
+  /**
+   * @var NegativeProductTargeting
+   */
+  public $negativeProductTargeting;
+
+  /**
+   * @var Profiles
+   */
+  public $profiles;
+
+  /**
+   * @var Reports
+   */
+  public $reports;
+
+  /**
+   * @var Snapshots
+   */
+  public $snapshots;
+
+  /**
+   * @var Stores
+   */
+  public $stores;
+
+  /**
    * Client constructor.
    * @param $clientId
    * @param $clientSecret
