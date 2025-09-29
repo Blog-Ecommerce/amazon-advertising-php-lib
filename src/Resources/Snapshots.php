@@ -7,6 +7,7 @@ use Exception;
 
 /**
  * Class Snapshots
+ *
  * @package CapsuleB\AmazonAdvertising\Resources
  * @see https://advertising.amazon.com/API/docs/v2/reference/snapshots
  *
@@ -18,11 +19,12 @@ class Snapshots {
 
   /**
    * Addons constructor.
+   *
    * @param Client $client
    */
-  public function __construct(Client $client) {
-    $this->client = $client;
-  }
+  public function __construct(
+    protected Client $client,
+  ) {}
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/snapshots#requestSnapshot

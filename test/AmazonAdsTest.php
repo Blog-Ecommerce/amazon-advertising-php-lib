@@ -6,7 +6,7 @@ use CapsuleB\AmazonAdvertising\Client;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
-class ClientTest extends TestCase {
+class AmazonAdsTest extends TestCase {
 
   /**
    * @var Client

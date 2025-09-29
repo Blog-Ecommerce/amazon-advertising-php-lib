@@ -134,77 +134,77 @@ class Client {
   /**
    * @var AdGroups
    */
-  public $adGroups;
+  public AdGroups $adGroups;
 
   /**
    * @var Keywords
    */
-  public $keywords;
+  public Keywords $keywords;
 
   /**
    * @var NegativeKeywords
    */
-  public $negativeKeywords;
+  public NegativeKeywords $negativeKeywords;
 
   /**
    * @var Campaigns
    */
-  public $campaigns;
+  public Campaigns $campaigns;
 
   /**
    * @var CampaignsNegativeKeywords
    */
-  public $campaignsNegativeKeywords;
+  public CampaignsNegativeKeywords $campaignsNegativeKeywords;
 
   /**
    * @var Portfolios
    */
-  public $portfolios;
+  public Portfolios $portfolios;
 
   /**
    * @var ProductEligibility
    */
-  public $productEligibility;
+  public ProductEligibility $productEligibility;
 
   /**
    * @var ProductSelector
    */
-  public $productSelector;
+  public ProductSelector $productSelector;
 
   /**
    * @var ProductAds
    */
-  public $productAds;
+  public ProductAds $productAds;
 
   /**
    * @var ProductTargeting
    */
-  public $productTargeting;
+  public ProductTargeting $productTargeting;
 
   /**
    * @var NegativeProductTargeting
    */
-  public $negativeProductTargeting;
+  public NegativeProductTargeting $negativeProductTargeting;
 
   /**
    * @var Profiles
    */
-  public $profiles;
+  public Profiles $profiles;
 
   /**
    * @var Reports
    */
-  public $reports;
+  public Reports $reports;
 
   /**
    * @var Snapshots
    */
-  public $snapshots;
+  public Snapshots $snapshots;
 
   /**
    * @var Stores
    */
-  public $stores;
+  public Stores $stores;
 
   /**
    * Client constructor.
