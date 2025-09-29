@@ -20,9 +20,9 @@ class ProductSelector {
    * Addons constructor.
    * @param Client $client
    */
-  public function __construct(Client $client) {
-    $this->client = $client;
-  }
+  public function __construct(
+    protected Client $client
+  ) {}
 
   /**
    * @see https://advertising.amazon.com/API/docs/en-us/product-metadata/#/Product%20Selector/ProductMetadata

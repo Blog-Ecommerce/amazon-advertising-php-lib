@@ -19,9 +19,9 @@ class NegativeKeywords {
    * Addons constructor.
    * @param Client $client
    */
-  public function __construct(Client $client) {
-    $this->client = $client;
-  }
+  public function __construct(
+    protected Client $client
+  ) {}
 
   /**
    * @see https://advertising.amazon.com/API/docs/v2/reference/keywords/ad_group_negative_keywords#listNegativeKeywords
